@@ -42,12 +42,48 @@ export default class Home extends Component {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
 
+
+      // Detect correct chain and prompt MetaMask switch if needed
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      console.log("Chain ID (hex):", chainId);
+
+      if (chainId !== '0x539') { // 1337 in hex
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x539' }], // 1337
+          });
+          window.location.reload();
+        } catch (switchError) {
+          // If chain is not added, offer to add it
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: '0x539',
+                  chainName: 'Ganache Local',
+                  rpcUrls: ['http://localhost:7545'],
+                  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                }],
+              });
+            } catch (addError) {
+              console.error("User rejected adding network:", addError);
+            }
+          }
+        }
+      }
+
+
+
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = Election.networks[networkId];
+      console.log("Network ID: "+networkId);
+      console.log("Deployed Network: "+deployedNetwork);
       const instance = new web3.eth.Contract(
         Election.abi,
         deployedNetwork && deployedNetwork.address
