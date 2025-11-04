@@ -63,7 +63,7 @@ export default class Home extends Component {
                 params: [{
                   chainId: '0x539',
                   chainName: 'Ganache Local',
-                  rpcUrls: ['http://localhost:7545'],
+                  rpcUrls: ['http://127.0.0.1:7545'],
                   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
                 }],
               });
