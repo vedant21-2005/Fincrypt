@@ -5,8 +5,11 @@ module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",      // Match Ganache RPC Host
-      port: 7545,             // Match Ganache RPC Port
       network_id: "1337",     // Must match Ganache network ID (from your screenshot)
+      port: 7545,
+      // network_id: "*",
+      // host: "127.0.0.1",
+      port: 7545,
       gas: 6721975,
       gasPrice: 20000000000,
     },
