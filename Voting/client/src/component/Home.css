@@ -1,285 +1,154 @@
-/* -----------------------------
-   Page base
------------------------------- */
+/* === Global Styles === */
 body {
-  background: linear-gradient(135deg, #3b5998, #5b7bb3);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6f9;
+  color: #1e293b;
   margin: 0;
   padding: 0;
 }
 
-/* -----------------------------
-   Top cards on Home (Account / Status)
------------------------------- */
-.home-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 2rem 1rem 3rem;
+/* === Container Layout === */
+.container-main {
+  width: 90%;
+  max-width: 1100px;
+  /* margin: 2rem auto; */
+  padding: 2rem;
+  background: transparent;
 }
 
-.card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  width: 700px;
-  text-align: center;
+
+.container-item {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.account-card h4 {
-  font-size: 1.15rem;
+/* === Info & Attention Boxes === */
+.info {
+  background: linear-gradient(135deg, #e0f2fe, #bfdbfe);
+  border-left: 5px solid #3b82f6;
   color: #1e3a8a;
-  margin-bottom: 0.4rem;
 }
 
-.account-card p {
-  color: #374151;
-  word-break: break-word;
-  font-size: 0.95rem;
-}
-
-.status-card h3 {
-  font-size: 1.35rem;
-  color: #1e3a8a;
-  margin-bottom: 0.4rem;
-}
-
-.status-card p {
-  color: #475569;
-  font-size: 0.95rem;
-}
-
-.attention-card {
-  background: #fff4f3;
+.attention {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
   border-left: 5px solid #dc2626;
+  color: #7f1d1d;
 }
 
-/* -----------------------------
-   Admin setup form (About Admin / About Election)
------------------------------- */
-
-/* Main wrapper for both sections */
-.admin-form-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem 1rem;
-  background: linear-gradient(135deg, #3b5998, #5b7bb3);
-  min-height: 100vh;
-  gap: 2rem; /* balanced space between both cards */
+/* === Headings === */
+h3 {
+  margin-bottom: 0.75rem;
+  color: #111827;
+  font-weight: 600;
 }
 
-/* Shared card style for each section */
-.admin-card,
-.election-card {
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 2.5rem;
-  /* width: 90%; */
-  width: 700px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-  margin-top: 1.5rem;
+h2,
+h1 {
+  color: #1e40af;
+  font-weight: 700;
 }
 
-/* Section titles */
-.admin-card h3,
-.election-card h3 {
-  text-align: left;
-  color: #0f172a;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Remove extra bottom margin for last section */
-.election-section:last-child {
-  margin-bottom: 0;
-}
-
-/* Label styling */
+/* === Labels & Inputs === */
 .label-home {
   display: block;
   font-weight: 500;
-  color: #1e293b;
+  color: #374151;
   margin-bottom: 0.5rem;
-  padding-left: 0.25rem;
+  width: 400px;
 }
 
-/* Input box styling */
 .input-home {
   display: block;
   width: 100%;
-  width: 600px; /* unified for all inputs */
-  padding: 0.9rem 1rem;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
   border: 1px solid #cbd5e1;
-  outline: none;
+  border-radius: 8px;
   font-size: 1rem;
-  color: #0f172a;
-  margin-bottom: 1.3rem;
+  background: #f8fafc;
   transition: all 0.2s ease-in-out;
-  background-color: #ffffff;
 }
 
-/* Focus effect */
 .input-home:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.25);
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  background: #ffffff;
 }
 
-/* Align first and last name side-by-side */
-.name-fields {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.name-fields .input-home {
-  flex: 1;
-  max-width: 290px;
-  min-width: 100px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .admin-form-section {
-    padding: 2rem 1rem;
-    gap: 1.5rem;
-  }
-
-  .admin-card,
-  .election-card {
-    padding: 2rem 1.25rem;
-    width: 95%;
-  }
-
-  .input-home {
-    max-width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-  }
-
-  .admin-section,
-  .election-section {
-    padding: 1rem; /* unified for mobile breakpoints */
-  }
-}
-
-/* ----------------------------- 
-   Election setup UI (Alert + Start Button)
------------------------------- */
-
-/* --- Yellow Info Box (Add Candidates Notice) --- */
-.alert-box {
-  background-color: #fff8e1;
-  border-left: 6px solid #fbbf24;
-  color: #3b3b3b;
-  padding: 1.5rem 2rem;
-  /*margin: 0.7rem;*/
-  margin-top: 0.7rem;
-  width: 90%;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-  width: 700px;
-  font-size: 1.1rem;
-}
-
-.alert-box a {
-  color: #1e40af;
-  font-weight: 600;
-  text-decoration: underline;
-  transition: color 0.2s ease;
-}
-
-.alert-box a:hover {
-  color: #2563eb;
-}
-
-/* --- Start Election Button --- */
+/* === Buttons === */
+button,
 .btn-start-election {
-  display: block;
+  display: inline-block;
   background: linear-gradient(90deg, #2563eb, #3b82f6);
-  color: #fff;
+  color: #ffffff;
   border: none;
   border-radius: 10px;
-  padding: 1rem 5rem;
-  font-size: 2rem;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  margin: 1.5rem auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transition: all 0.25s ease;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
 }
 
+button:hover,
 .btn-start-election:hover {
+  background: linear-gradient(90deg, #1d4ed8, #2563eb);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 
-.btn-start-election:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
-  box-shadow: none;
+/* === Admin Section === */
+.about-admin,
+.about-election {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border: 1px solid #e2e8f0;
 }
 
-/* ---------------------------------
-   Election Status Styling
------------------------------------ */
-.election-status-container {
-  width: 100%;
-  width: 700px;
-  margin: 2rem auto;
-  text-align: left;
-}
-
-.election-status-title {
-  color: #0f172a;
-  font-size: 1.6rem;
-  font-weight: 600;
+.about-admin h3,
+.about-election h3 {
+  color: #2563eb;
+  border-bottom: 2px solid #2563eb;
+  display: inline-block;
+  padding-bottom: 5px;
   margin-bottom: 1rem;
 }
 
-.election-status-box {
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: flex-start;
-  gap: 4rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  width: 700px;
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.status-label {
+/* === Link Styling === */
+a {
+  text-decoration: none;
+  color: #2563eb;
   font-weight: 500;
-  color: #1e293b;
-  padding: 0rem 0rem 0rem 3rem;
+  transition: color 0.2s;
 }
 
-.status-indicator {
-  padding: 0.5rem 2.5rem;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: white;
-  transition: background 0.3s ease;
+a:hover {
+  color: #1d4ed8;
 }
 
-/* Green for active */
-.active-green {
-  background-color: #22c55e;
+/* === Centering Utilities === */
+.center-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Red for inactive */
-.inactive-red {
-  background-color: #ef4444;
+/* === Responsive === */
+@media (max-width: 768px) {
+  .container-main {
+    padding: 1.2rem;
+  }
+  .input-home {
+    font-size: 0.95rem;
+  }
+  button {
+    width: 100%;
+  }
 }

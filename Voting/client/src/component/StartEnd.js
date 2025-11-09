@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const StartEnd = (props) => {
   const btn = {
     display: "block",
-    padding: "21px",
-    margin: "7px",
+    // padding: "21px",
+    // margin: "7px",
     minWidth: "max-content",
     textAlign: "center",
     width: "333px",
@@ -14,7 +14,7 @@ const StartEnd = (props) => {
   return (
     <div
       className="container-main"
-      style={{ borderTop: "1px solid", marginTop: "0px" }}
+      style={{ marginTop: "0px",padding:" 0" }}
     >
       {!props.elStarted ? (
         <>
@@ -41,7 +41,7 @@ const StartEnd = (props) => {
                   page.
                 </p>
               </div>
-              <div className="container-item">
+              <div className="container-item" style={{background:"transparent",boxShadow:"none",margin:"0"}}>
                 <button type="submit" style={btn}>
                   Start Election {props.elEnded ? "Again" : null}
                 </button>
@@ -64,12 +64,12 @@ const StartEnd = (props) => {
         </>
       ) : (
         <>
-          <div className="container-item">
+          <div className="container-item" >
             <center>
-              <p>The election started.</p>
+              <h3>The election started.</h3>
             </center>
           </div>
-          <div className="container-item">
+          <div className="container-item"  style={{background:"transparent",boxShadow:"none",margin:"0"}}>
             <button
               type="button"
               // onClick={this.endElection}

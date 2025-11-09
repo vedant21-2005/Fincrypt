@@ -161,7 +161,7 @@ export default class Voting extends Component {
                   this.state.currentVoter.isVerified ? (
                     this.state.currentVoter.hasVoted ? (
                       <div className="success-card">
-                        <h3>You’ve already cast your vote.</h3>
+                        <h3>You've already cast your vote.</h3>
                         <Link to="/Results" className="results-link">
                           View Results
                         </Link>

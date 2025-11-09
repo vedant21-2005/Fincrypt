@@ -101,10 +101,14 @@ body {
   cursor: pointer;
   text-decoration: none;
   transition: 0.2s;
+  padding: 0%;
+  margin: 0%;
+  font-size: 1rem;
 }
 
 .link-login:hover {
   text-decoration: underline;
+  background: transparent;
 }
 
 /* Responsive */

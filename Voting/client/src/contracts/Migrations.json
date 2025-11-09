@@ -59,7 +59,7 @@
   "sourceMap": "69:360:1:-;;;246:58;8:9:-1;5:2;;;30:1;27;20:12;5:2;246:58:1;286:10;278:5;;:18;;;;;;;;;;;;;;;;;;69:360;;;;;;",
   "deployedSourceMap": "69:360:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;69:360:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;123:39;;;:::i;:::-;;;;;;;;;;;;;;;;;;;96:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;312:114;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;312:114:1;;;;;;;;;;;;;;;;;:::i;:::-;;123:39;;;;:::o;96:20::-;;;;;;;;;;;;;:::o;312:114::-;222:5;;;;;;;;;;;208:19;;:10;:19;;;204:26;;;409:9;382:24;:36;;;;204:26;312:114;:::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.21 <0.8.0;\r\n\r\ncontract Migrations {\r\n    address public owner;\r\n    uint256 public last_completed_migration;\r\n\r\n    modifier restricted() {\r\n        if (msg.sender == owner) _;\r\n    }\r\n\r\n    constructor() public {\r\n        owner = msg.sender;\r\n    }\r\n\r\n    function setCompleted(uint256 completed) public restricted {\r\n        last_completed_migration = completed;\r\n    }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\91977\\Desktop\\Fincrypt\\Fincrypt-Dev\\voting\\contracts\\Migrations.sol",
+  "sourcePath": "C:\\Users\\ASUS\\Desktop\\Github project 2\\AT\\Fincrypt-Dev\\Voting\\contracts\\Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -958,12 +958,12 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0x31a78B4270Da078a941B50a1CE1C3ed32DC5eBEA",
-      "transactionHash": "0x37c0021f443ced6698f282294798ee84cc6ad89bd2bfe3cd861620711b4ea1c0"
+      "address": "0xCdc8C2a77aB68C386827984FEBfa60efD42336D0",
+      "transactionHash": "0xd58580a27a76e7bb6030121ae97e2a539eb8167e4a2edd47ced2a894c87bad61"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-11-04T17:38:09.798Z",
+  "updatedAt": "2025-11-09T13:27:02.587Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

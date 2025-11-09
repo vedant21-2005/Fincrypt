@@ -1,11 +1,11 @@
-/*
+
 import React from "react";
 
 const ElectionStatus = (props) => {
   const containerStyle = {
     background: "#f6f6f6",
     padding: "1.8rem 2rem",
-    margin: "2rem auto",
+    // margin: "2rem auto",
     width: "90%",
     maxWidth: "700px",
     borderRadius: "12px",
@@ -55,13 +55,13 @@ const ElectionStatus = (props) => {
     <div
       className="container-main"
       style={{
-        borderTop: "1px solid #cbd5e1",
+        // borderTop: "1px solid #cbd5e1",
         marginTop: "0px",
         padding: "2rem 0",
       }}
     >
-      <h3 style={titleStyle}>Election Status</h3>
       <div style={containerStyle}>
+      <h3 style={titleStyle}>Election Status</h3>
         <div style={statusWrapper}>
           <div style={statusBox(props.elStarted)}>
             <span style={dotStyle(props.elStarted)}></span>
@@ -78,7 +78,6 @@ const ElectionStatus = (props) => {
 };
 
 export default ElectionStatus;
-*/
 
 /*import React from "react";
 
@@ -112,42 +111,4 @@ const ElectionStatus = (props) => {
   );
 };
 
-export default ElectionStatus;
-*/
-
-import React from "react";
-import "./Home.css"; // to reuse your base color and layout styles
-
-const ElectionStatus = (props) => {
-  return (
-    <div className="election-status-container">
-      <h3 className="election-status-title">Election Status</h3>
-
-      <div className="election-status-box">
-        <div className="status-item">
-          <span className="status-label">Started:</span>
-          <span
-            className={`status-indicator ${
-              props.elStarted ? "active-green" : "inactive-red"
-            }`}
-          >
-            {props.elStarted ? "True" : "False"}
-          </span>
-        </div>
-
-        <div className="status-item">
-          <span className="status-label">Ended:</span>
-          <span
-            className={`status-indicator ${
-              props.elEnded ? "active-green" : "inactive-red"
-            }`}
-          >
-            {props.elEnded ? "True" : "False"}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ElectionStatus;
+export default ElectionStatus;*/

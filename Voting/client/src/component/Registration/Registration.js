@@ -262,7 +262,7 @@ export function loadCurrentVoter(voter, isRegistered) {
         <center>Your Registered Information</center>
       </div>
       <div
-        className={"container-list " + (isRegistered ? "success" : "attention")}
+        className={"container-list " + (isRegistered ? "success" : "attention")} style={{width:"700px"}}
       >
         <table>
           <tbody>
@@ -304,7 +304,7 @@ export function loadAllVoters(voters) {
         <center>List of Voters</center>
       </div>
       {voters.map((voter, index) => (
-        <div key={index} className="container-list success">
+        <div key={index} className="container-list success" style={{width:"700px"}}>
           <table>
             <tbody>
               <tr>

@@ -37,7 +37,7 @@ function LoginPage() {
     <div className="auth-page">
       <div className="auth-card">
         <h2 className="auth-title">Welcome Back</h2>
-        <p className="auth-subtitle">Login to your iVote account</p>
+        <p className="auth-subtitle">Login to your Fincrypt account</p>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label htmlFor="officialEmail">Email Address</label>
