@@ -14,6 +14,27 @@ function Signup() {
   const [otpVerified, setOtpVerified] = useState(false);
   const [sessionId, setSessionId] = useState('');
 
+  const [resendTimer, setResendTimer] = useState(0); // seconds left before resend allowed
+  const [resendCount, setResendCount] = useState(0); // how many resends used
+  const MAX_RESEND = 3; // change this if you want more/less attempts
+
+
+  // countdown timer effect
+  React.useEffect(() => {
+    if (resendTimer <= 0) return;
+    const t = setInterval(() => {
+      setResendTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(t);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [resendTimer]);
+
+
 
   // ✅ Input change handler
   const handleInputChange = (e) => {
@@ -66,7 +87,7 @@ function Signup() {
   };
 
   // ✅ Form submit handler with validation
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!otpVerified) {
@@ -74,16 +95,13 @@ function Signup() {
       return;
     }
 
-
     // 1️⃣ Password match
     if (confirmPassword !== userData.newPassword) {
       alert('Passwords do not match');
       return;
     }
 
-    
-
-    // 2️⃣ Aadhar validation
+    // 2️⃣ Aadhaar validation
     if (!/^\d{12}$/.test(userData.aadharCard)) {
       alert('Invalid Aadhar number — must be exactly 12 digits.');
       return;
@@ -105,21 +123,39 @@ function Signup() {
       return;
     }
 
-    // ✅ Submit to backend
-    axios
-      .post('http://127.0.0.1:5001/register', userData)
-      .then((response) => {
-        alert(response.data.message);
+    try {
+      // ✅ Submit to backend
+      const response = await axios.post('http://127.0.0.1:5001/register', userData);
+
+      if (response.status === 200) {
+        alert(response.data.message || 'Registration successful!');
         setUserData({});
         setConfirmPassword('');
         setPasswordStrength('');
         history.push('/');
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('Error registering user');
-      });
+      }
+    } catch (error) {
+      console.error(error);
+
+      // ✅ Check for known backend messages
+      if (error.response && error.response.data) {
+        const message = error.response.data.message;
+
+        if (message.includes('Aadhaar')) {
+          alert('This Aadhaar card is already registered. Please login instead.');
+        } else if (message.includes('Phone')) {
+          alert('This phone number is already registered. Please login instead.');
+        } else if (message.includes('email')) {
+          alert('This email is already registered. Try logging in.');
+        } else {
+          alert(message || 'An unknown error occurred during registration.');
+        }
+      } else {
+        alert('Error connecting to server. Please try again.');
+      }
+    }
   };
+
 
   const handleLoginRedirect = () => {
     history.push('/');
@@ -132,19 +168,53 @@ function Signup() {
       return;
     }
 
+    // Prevent too many resends
+    if (resendCount >= MAX_RESEND) {
+      alert(`You have reached the maximum of ${MAX_RESEND} resend attempts. Try again later or contact support.`);
+      return;
+    }
+
     try {
-      const res = await axios.post('http://127.0.0.1:5001/send-otp', {
+      // Step 1: Check phone availability first (prevents wasting OTP credits)
+      const checkRes = await axios.post('http://127.0.0.1:5001/check-phone', {
         phoneNumber: userData.phoneNumber,
       });
 
-      alert(res.data.message);
-      setSessionId(res.data.sessionId);
-      setOtpSent(true);
+      // If phone exists, backend returns 400 and we hit catch block.
+      if (checkRes.status === 200) {
+        // Step 2: Request OTP from backend
+        const res = await axios.post('http://127.0.0.1:5001/send-otp', {
+          phoneNumber: userData.phoneNumber,
+        });
+
+        // Backend should return sessionId
+        const sid = res.data.sessionId || res.data.sessionId || res.data.Details || null;
+
+        // set states
+        setSessionId(sid);
+        setOtpSent(true);
+        setOtp(''); // clear old input
+        setOtpVerified(false); // must verify new OTP
+        setResendCount(prev => prev + 1);
+
+        // start cooldown (e.g., 30 seconds). change as needed
+        setResendTimer(30);
+
+        alert(res.data.message || 'OTP sent. Please check your phone.');
+      }
     } catch (err) {
-      console.error(err);
+      // backend reported phone already exists
+      if (err.response && err.response.status === 400 && err.response.data && err.response.data.message && err.response.data.message.includes('registered')) {
+        alert('This phone number is already registered. Use a different number or login.');
+        return;
+      }
+
+      console.error('Send OTP error:', err.response?.data || err.message || err);
       alert('Failed to send OTP. Please try again.');
     }
   };
+
+
 
   const handleVerifyOTP = async () => {
     if (!otp) {
@@ -246,22 +316,23 @@ function Signup() {
               style={{ width: '100%', marginBottom: '10px' }}
             />
 
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={handleSendOTP}
-              disabled={otpSent && !otpVerified}
-                  style={{
-                    padding: '0.4rem 1.5rem',
-                    fontSize: '0.9rem',
-                    fontWeight: '500',
-                    borderRadius: '6px',
-                    background: '#3b82f6',
-                    marginTop: '0.3rem',
-                  }}
-            >
-              {otpSent && !otpVerified ? 'Resend OTP' : 'Send OTP'}
-            </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={handleSendOTP}
+            disabled={resendTimer > 0 || (resendCount >= MAX_RESEND)}
+            style={{
+              padding: '0.4rem 1.5rem',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              borderRadius: '6px',
+              background: '#3b82f6',
+              marginTop: '0.3rem',
+            }}
+          >
+            {resendTimer > 0 ? `Resend in ${resendTimer}s` : (otpSent && !otpVerified ? 'Resend OTP' : 'Send OTP')}
+          </button>
+
           </div>
 
           {otpSent && (
