@@ -19,13 +19,14 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // ✅ Schema
 const userSchema = new mongoose.Schema({
-  officialEmail: String,
-  aadharCard: String,
-  name: String,
-  course: String,
-  phoneNumber: String,
-  password: String
+  officialEmail: { type: String, required: true },
+  aadharCard: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  course: { type: String, required: true },
+  phoneNumber: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
 });
+
 
 const User = mongoose.model('Users', userSchema);
 
@@ -38,25 +39,35 @@ app.post('/register', async (req, res) => {
   }
 
   try {
+    const normalizedAadhar = aadharCard.trim();
+    const normalizedPhone = phoneNumber.trim();
+
+    // Check if Aadhaar already exists
+    const existingAadhar = await User.findOne({ aadharCard: normalizedAadhar });
+    if (existingAadhar) {
+      return res.status(400).send({ message: 'Aadhaar card already registered' });
+    }
+
+    // Check if phone number already exists
+    const existingPhone = await User.findOne({ phoneNumber: normalizedPhone });
+    if (existingPhone) {
+      return res.status(400).send({ message: 'Phone number already registered' });
+    }
+
+    // If unique, proceed with registration
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(newPassword, salt);
 
-    const user = new User({
-      officialEmail,
-      aadharCard,
-      name,
-      course,
-      phoneNumber,
-      password: hashedPassword
-    });
-
+    const user = new User({ officialEmail, aadharCard, name, course, phoneNumber, password: hashedPassword });
     await user.save();
-    res.send({ message: 'Registration successful' });
+
+    res.status(200).send({ message: 'Registration successful!' });
   } catch (err) {
-    console.error('Error saving user:', err);
-    res.status(500).send({ message: 'A server error occurred! Please try again.' });
+    console.error(err);
+    res.status(500).send({ message: 'Server error during registration' });
   }
 });
+
 
 // ✅ Login route
 app.post('/login', async (req, res) => {
@@ -111,6 +122,31 @@ app.get('/api/admin/:email', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+// ✅ Check if phone number already exists before sending OTP
+app.post('/check-phone', async (req, res) => {
+  const { phoneNumber } = req.body;
+
+  if (!phoneNumber || phoneNumber.length !== 10) {
+    return res.status(400).json({ message: 'Invalid phone number' });
+  }
+
+  try {
+    const existingUser = await User.findOne({ phoneNumber });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Phone number already registered' });
+    }
+
+    // ✅ Phone not registered — safe to send OTP
+    return res.status(200).json({ message: 'Phone number available' });
+  } catch (error) {
+    console.error('Error checking phone:', error);
+    return res.status(500).json({ message: 'Server error while checking phone' });
+  }
+});
+
 
 // ✅ Send OTP
 app.post('/send-otp', async (req, res) => {
