@@ -1,3 +1,5 @@
 MONGO_URI=
 TWO_FACTOR_API_KEY=
 PORT=5001
+
+Create a .env file in Backend folder and input this data
